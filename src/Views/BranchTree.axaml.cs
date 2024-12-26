@@ -275,6 +275,9 @@ namespace SourceGit.Views
                 rows.RemoveRange(idx + 1, removeCount);
             }
 
+            var repo = DataContext as ViewModels.Repository;
+            repo?.UpdateBranchNodeIsExpanded(node);
+
             RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
             _disableSelectionChangingEvent = false;
         }
@@ -396,6 +399,18 @@ namespace SourceGit.Views
             else if (branches.Find(x => x.IsCurrent) == null)
             {
                 var menu = new ContextMenu();
+
+                var mergeMulti = new MenuItem();
+                mergeMulti.Header = App.Text("BranchCM.MergeMultiBranches", branches.Count);
+                mergeMulti.Icon = App.CreateMenuIcon("Icons.Merge");
+                mergeMulti.Click += (_, ev) =>
+                {
+                    repo.MergeMultipleBranches(branches);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(mergeMulti);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
                 var deleteMulti = new MenuItem();
                 deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
                 deleteMulti.Icon = App.CreateMenuIcon("Icons.Clear");
@@ -405,6 +420,7 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
                 menu.Items.Add(deleteMulti);
+
                 menu?.Open(this);
             }
         }

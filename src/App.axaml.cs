@@ -164,7 +164,12 @@ namespace SourceGit
                     var resDic = new ResourceDictionary();
                     var overrides = JsonSerializer.Deserialize(File.ReadAllText(themeOverridesFile), JsonCodeGen.Default.ThemeOverrides);
                     foreach (var kv in overrides.BasicColors)
-                        resDic[$"Color.{kv.Key}"] = kv.Value;
+                    {
+                        if (kv.Key.Equals("SystemAccentColor", StringComparison.Ordinal))
+                            resDic["SystemAccentColor"] = kv.Value;
+                        else
+                            resDic[$"Color.{kv.Key}"] = kv.Value;
+                    }
 
                     if (overrides.GraphColors.Count > 0)
                         Models.CommitGraph.SetPens(overrides.GraphColors, overrides.GraphPenThickness);
@@ -543,9 +548,11 @@ namespace SourceGit
             _launcher = new ViewModels.Launcher(startupRepo);
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
 
+        #if !DISABLE_UPDATE_DETECTION
             var pref = ViewModels.Preference.Instance;
             if (pref.ShouldCheck4UpdateOnStartup())
                 Check4Update();
+        #endif
         }
 
         private ViewModels.Launcher _launcher = null;
