@@ -82,6 +82,10 @@ namespace SourceGit.ViewModels
 
                         CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, currentBranch.Head).Result();
                     }
+                    else
+                    {
+                        CommitMessage = string.Empty;
+                    }
 
                     Staged = GetStagedChanges();
                     SelectedStaged = [];
@@ -310,13 +314,13 @@ namespace SourceGit.ViewModels
 
         public void StashAll(bool autoStart)
         {
-            if (!PopupHost.CanCreatePopup())
+            if (!_repo.CanCreatePopup())
                 return;
 
             if (autoStart)
-                PopupHost.ShowAndStartPopup(new StashChanges(_repo, _cached, false));
+                _repo.ShowAndStartPopup(new StashChanges(_repo, _cached, false));
             else
-                PopupHost.ShowPopup(new StashChanges(_repo, _cached, false));
+                _repo.ShowPopup(new StashChanges(_repo, _cached, false));
         }
 
         public void StageSelected(Models.Change next)
@@ -401,12 +405,12 @@ namespace SourceGit.ViewModels
 
         public void Discard(List<Models.Change> changes)
         {
-            if (PopupHost.CanCreatePopup())
+            if (_repo.CanCreatePopup())
             {
                 if (changes.Count == _unstaged.Count && _staged.Count == 0)
-                    PopupHost.ShowPopup(new Discard(_repo));
+                    _repo.ShowPopup(new Discard(_repo));
                 else
-                    PopupHost.ShowPopup(new Discard(_repo, changes));
+                    _repo.ShowPopup(new Discard(_repo, changes));
             }
         }
 
@@ -615,7 +619,7 @@ namespace SourceGit.ViewModels
                         useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", cherryPick.HeadName);
                         useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
-                    else if(_inProgressContext is RebaseInProgress rebase)
+                    else if (_inProgressContext is RebaseInProgress rebase)
                     {
                         useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.HeadName);
                         useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", rebase.BaseName);
@@ -662,8 +666,8 @@ namespace SourceGit.ViewModels
                     stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                     stash.Click += (_, e) =>
                     {
-                        if (PopupHost.CanCreatePopup())
-                            PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
+                        if (_repo.CanCreatePopup())
+                            _repo.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
 
                         e.Handled = true;
                     };
@@ -967,7 +971,7 @@ namespace SourceGit.ViewModels
                     }
                     else if (_inProgressContext is RevertInProgress revert)
                     {
-                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", revert.Head.SHA.Substring(0,10) + " (revert)");
+                        useTheirs.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", revert.Head.SHA.Substring(0, 10) + " (revert)");
                         useMine.Header = new Views.NameHighlightedTextBlock("FileCM.ResolveUsing", _repo.CurrentBranch.Name);
                     }
                     else if (_inProgressContext is MergeInProgress merge)
@@ -1004,8 +1008,8 @@ namespace SourceGit.ViewModels
                 stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new StashChanges(_repo, _selectedUnstaged, true));
 
                     e.Handled = true;
                 };
@@ -1127,8 +1131,8 @@ namespace SourceGit.ViewModels
                 stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
 
                     e.Handled = true;
                 };
@@ -1302,8 +1306,8 @@ namespace SourceGit.ViewModels
                 stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
-                    if (PopupHost.CanCreatePopup())
-                        PopupHost.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
+                    if (_repo.CanCreatePopup())
+                        _repo.ShowPopup(new StashChanges(_repo, _selectedStaged, true));
 
                     e.Handled = true;
                 };
@@ -1351,8 +1355,9 @@ namespace SourceGit.ViewModels
         {
             var menu = new ContextMenu();
 
+            var gitTemplate = new Commands.Config(_repo.FullPath).Get("commit.template");
             var templateCount = _repo.Settings.CommitTemplates.Count;
-            if (templateCount == 0)
+            if (templateCount == 0 && string.IsNullOrEmpty(gitTemplate))
             {
                 menu.Items.Add(new MenuItem()
                 {
@@ -1375,6 +1380,29 @@ namespace SourceGit.ViewModels
                         e.Handled = true;
                     };
                     menu.Items.Add(item);
+                }
+
+                if (!string.IsNullOrEmpty(gitTemplate))
+                {
+                    var friendlyName = gitTemplate;
+                    if (!OperatingSystem.IsWindows())
+                    {
+                        var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                        var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
+                        if (gitTemplate.StartsWith(home, StringComparison.Ordinal))
+                            friendlyName = "~" + gitTemplate.Substring(prefixLen);
+                    }
+
+                    var gitTemplateItem = new MenuItem();
+                    gitTemplateItem.Header = new Views.NameHighlightedTextBlock("WorkingCopy.UseCommitTemplate", friendlyName);
+                    gitTemplateItem.Icon = App.CreateMenuIcon("Icons.Code");
+                    gitTemplateItem.Click += (_, e) =>
+                    {
+                        if (File.Exists(gitTemplate))
+                            CommitMessage = File.ReadAllText(gitTemplate);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(gitTemplateItem);
                 }
             }
 
@@ -1486,7 +1514,7 @@ namespace SourceGit.ViewModels
 
         private void DoCommit(bool autoStage, bool autoPush, bool allowEmpty)
         {
-            if (!PopupHost.CanCreatePopup())
+            if (!_repo.CanCreatePopup())
             {
                 App.RaiseException(_repo.FullPath, "Repository has unfinished job! Please wait!");
                 return;
@@ -1532,7 +1560,7 @@ namespace SourceGit.ViewModels
                         UseAmend = false;
 
                         if (autoPush)
-                            PopupHost.ShowAndStartPopup(new Push(_repo, null));
+                            _repo.ShowAndStartPopup(new Push(_repo, null));
                     }
 
                     _repo.MarkBranchesDirtyManually();

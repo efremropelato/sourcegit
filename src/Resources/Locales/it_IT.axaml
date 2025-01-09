@@ -66,8 +66,7 @@
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Invia ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Riallinea ${0}$ su ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Rinomina ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Imposta Branch di Tracciamento</x:String>
-  <x:String x:Key="Text.BranchCM.UnsetUpstream" xml:space="preserve">Rimuovi Tracciamento</x:String>
+  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Imposta Branch di Tracciamento...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Confronto Branch</x:String>
   <x:String x:Key="Text.Bytes" xml:space="preserve">Byte</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">ANNULLA</x:String>
@@ -344,7 +343,6 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Traccia file con nome '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Traccia tutti i file *{0}</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Storico</x:String>
-  <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Passa Layout Orizzontale/Verticale</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTORE</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ORA AUTORE</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAFICO &amp; OGGETTO</x:String>
@@ -483,7 +481,7 @@
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Potatura Worktrees</x:String>
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Potatura delle informazioni di worktree in `$GIT_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
-  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch:</x:String>
+  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch Remoto:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Recupera tutti i branch</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">In:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Modifiche Locali:</x:String>

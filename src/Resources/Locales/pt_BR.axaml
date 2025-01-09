@@ -91,8 +91,7 @@
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Subir ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Rebase ${0}$ em ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Renomear ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Definir Branch de Rastreamento</x:String>
-  <x:String x:Key="Text.BranchCM.UnsetUpstream" xml:space="preserve">Remover Upstream</x:String>
+  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Definir Branch de Rastreamento...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">Comparação de Branches</x:String>
   <x:String x:Key="Text.Bytes" xml:space="preserve">Bytes</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">CANCELAR</x:String>
@@ -368,7 +367,6 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Rastrear arquivos nomeados '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Rastrear todos os arquivos *{0}</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Históricos</x:String>
-  <x:String x:Key="Text.Histories.DisplayMode" xml:space="preserve">Alternar Layout Horizontal/Vertical</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">DATA DO AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRÁFICO &amp; ASSUNTO</x:String>
@@ -506,7 +504,7 @@
   <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Podar Worktrees</x:String>
   <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Podar informações de worktree em `$GIT_DIR/worktrees`</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Puxar</x:String>
-  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch:</x:String>
+  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch Remoto:</x:String>
   <x:String x:Key="Text.Pull.FetchAllBranches" xml:space="preserve">Buscar todos os branches</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Para:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Alterações Locais:</x:String>
@@ -570,7 +568,6 @@
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Desfazer</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Esconder no gráfico de commit</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Incluir no gráfico de commit</x:String>
-  <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">Alternar Modo de Ordenação</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Data do Commit (--date-order)</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topologicamente (--topo-order)</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCHES LOCAIS</x:String>
